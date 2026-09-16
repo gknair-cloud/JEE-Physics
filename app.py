@@ -18,7 +18,7 @@ if not GOOGLE_KEY:
     st.stop()
 
 def call_gemini(prompt, image_file=None):
-    url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={GOOGLE_KEY}"
+    url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key={GOOGLE_KEY}"
     parts = [{"text": prompt}]
     if image_file:
         img_bytes = image_file.getvalue()
