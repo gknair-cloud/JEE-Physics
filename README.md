@@ -1,1 +1,1 @@
-Physice study
+Physics study
