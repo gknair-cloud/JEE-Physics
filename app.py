@@ -39,7 +39,7 @@ subject = st.selectbox("Subject", list(SYLLABUS.keys()))
 chapter = st.selectbox("Chapter", SYLLABUS[subject])
 level = st.select_slider("Level", ["Easy", "JEE Main", "JEE Advanced"], value="JEE Main")
 
-tab1, tab2, tab3 = st.tabs(["📸 Doubt Solver", "📝 Practice", "📖 Formula"])
+tab1, tab2, tab3, tab4 = st.tabs(["📸 Doubt Solver", "📝 Practice", "📖 Formula", "🎯 Mock Test"])
 
 with tab1:
     q = st.text_area(f"{subject} doubt എഴുതൂ")
@@ -65,4 +65,47 @@ with tab3:
     if st.button("Show Formula Sheet"):
         with st.spinner("Loading..."):
             st.markdown(call_gemini(f"Give formula sheet for JEE {subject} {chapter}"))
+            
+with tab4:
+    st.subheader("🎯 JEE Main Mini Mock Test (30 min)")
+    
+    if 'mock_started' not in st.session_state:
+        st.session_state.mock_started = False
+        st.session_state.mock_questions = ""
+        st.session_state.mock_score = 0
+
+    if not st.session_state.mock_started:
+        mock_sub = st.selectbox("Mock Subject", ["Full PCM (90 Q)", "Physics Only (30 Q)", "Chemistry Only (30 Q)", "Maths Only (30 Q)"])
+        mock_level = st.select_slider("Difficulty", ["Easy", "Medium", "Hard"], value="Medium")
+        
+        if st.button("Start Mock Test 🚀", type="primary"):
+            st.session_state.mock_started = True
+            with st.spinner("JEE Paper തയ്യാറാക്കുന്നു... 10 sec"):
+                prompt = f"Create a JEE Main {mock_sub} mini mock test with 10 questions (5 MCQ, 5 Numerical). Level {mock_level}. Give questions only, with options A B C D. Don't give answers now. Store answers secretly."
+                qs = call_gemini(prompt)
+                st.session_state.mock_questions = qs
+                st.rerun()
+    else:
+        st.info("⏰ Timer: 30 Minutes - Time yourself!")
+        st.markdown(st.session_state.mock_questions)
+        
+        st.divider()
+        user_ans = st.text_area("നിങ്ങളുടെ Answers എഴുതൂ (Ex: 1-A, 2-C, 3-25)")
+        
+        col1, col2 = st.columns(2)
+        with col1:
+            if st.button("Submit & Check Score"):
+                if user_ans:
+                    with st.spinner("Checking..."):
+                        check_prompt = f"These are JEE questions:\n{st.session_state.mock_questions}\n\nStudent answers: {user_ans}\n\nCheck it, give score out of 10, and give correct answers with short explanation."
+                        result = call_gemini(check_prompt)
+                        st.success("Result Ready!")
+                        st.markdown(result)
+                else:
+                    st.warning("Answers എഴുതൂ")
+        with col2:
+            if st.button("End Test & New Paper"):
+                st.session_state.mock_started = False
+                st.session_state.mock_questions = ""
+                st.rerun()
         
