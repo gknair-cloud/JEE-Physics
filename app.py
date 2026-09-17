@@ -54,7 +54,7 @@ with tab1:
                 st.markdown(answer)
 
 with tab2:
-    num = st.slider("എത്ര ചോദ്യം?", 1, 10, 5)
+    num = st.slider("എത്ര ചോദ്യം?", 1, 20, 5)
     qtype = st.radio("Type", ["MCQ", "Numerical"], horizontal=True)
     if st.button("Generate Practice"):
         with st.spinner("Questions തയ്യാറാക്കുന്നു..."):
