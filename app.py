@@ -55,19 +55,67 @@ with tab1:
 with tab2:
     num = st.slider("എത്ര ചോദ്യം?", 5, 20, 10)
     qtype = st.radio("Type", ["MCQ", "Numerical", "Mixed PYQ"], horizontal=True)
-    if st.button("Generate Practice with Explanation"):
+
+    if 'prac_q' not in st.session_state:
+        st.session_state.prac_q = ""
+        st.session_state.prac_ans = ""
+        st.session_state.prac_exp = ""
+
+    if st.button("Generate PYQ Practice"):
         with st.spinner("PYQ തയ്യാറാക്കുന്നു..."):
-            p = f"""Generate {num} JEE Main Previous Year Questions (PYQ) for {subject} {chapter}, Level {level}, Type {qtype}.
+            p = f"""Generate {num} JEE Main PYQ for {subject} {chapter}, Level {level}, Type {qtype}.
             RULES:
-            1. MUST pick from last 5 years PYQ (2020-2025).
-            2. For each question, MANDATORY format:
-               Q1. [2023 PYQ] question...
-               A)...
-               Correct Answer: B
-               Explanation: short 2-3 line trick
-            3. Shuffle years.
-            4. Give FULL answer + explanation for every question."""
-            st.markdown(call_gemini(p))
+            1. Pick from 2020-2025 PYQ only, shuffle.
+            2. Output in 3 SEPARATE SECTIONS with headings:
+
+            ---QUESTIONS---
+            Q1. [2023 PYQ] question + options A B C D
+            Q2. [2024 PYQ]...
+
+            ---ANSWER KEY---
+            1 - B, 2 - A, 3 - 25... (only answers, no explanation)
+
+            ---EXPLANATIONS---
+            Q1. Correct B because... (2 lines trick)
+            Q2....
+            """
+            full = call_gemini(p)
+            # Split into 3 parts
+            try:
+                q_part = full.split("---ANSWER KEY---")[0].replace("---QUESTIONS---","").strip()
+                ans_part = full.split("---ANSWER KEY---")[1].split("---EXPLANATIONS---")[0].strip()
+                exp_part = full.split("---EXPLANATIONS---")[1].strip()
+            except:
+                q_part = full
+                ans_part = "Answer Key generating... press Explain button"
+                exp_part = "Press button for explanation"
+
+            st.session_state.prac_q = q_part
+            st.session_state.prac_ans = ans_part
+            st.session_state.prac_exp = exp_part
+            st.rerun()
+
+    if st.session_state.prac_q:
+        st.divider()
+        st.subheader("📝 Questions (PYQ 2020-2025)")
+        st.markdown(st.session_state.prac_q)
+
+        col1, col2 = st.columns(2)
+        with col1:
+            show_ans = st.checkbox("🔑 Answer Key കാണിക്കൂ")
+            if show_ans:
+                st.success(st.session_state.prac_ans)
+
+        with col2:
+            show_exp = st.checkbox("💡 Explanation കാണിക്കൂ")
+            if show_exp:
+                st.info(st.session_state.prac_exp)
+
+        if st.button("Clear & New Set"):
+            st.session_state.prac_q = ""
+            st.session_state.prac_ans = ""
+            st.session_state.prac_exp = ""
+            st.rerun()
 
 with tab3:
     if st.button("Show Formula Sheet"):
