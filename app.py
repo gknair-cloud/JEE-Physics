@@ -18,7 +18,7 @@ if not GOOGLE_KEY:
 
 def call_gemini(prompt, image_file=None):
     # 100% CORRECT MODEL NAME - ഇത് മാറ്റരുത്
-    url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-lite:generateContent?key={GOOGLE_KEY}"
+    url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent?key={GOOGLE_KEY}"
     parts = [{"text": prompt}]
     if image_file:
         b64 = base64.b64encode(image_file.getvalue()).decode('utf-8')
