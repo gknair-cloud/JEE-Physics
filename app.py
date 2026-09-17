@@ -17,7 +17,7 @@ if not GOOGLE_KEY:
     st.stop()
 
 def call_gemini(prompt, image_file=None):
-    url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash-8b:generateContent?key={GOOGLE_KEY}"
+    url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-8b:generateContent?key={GOOGLE_KEY}"
     parts = [{"text": prompt + "\n\nKeep answer short, 300 words max, to the point."}]
     if image_file:
         b64 = base64.b64encode(image_file.getvalue()).decode('utf-8')
