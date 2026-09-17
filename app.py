@@ -31,9 +31,9 @@ def call_gemini(prompt, image_file=None):
         return f"Error: {r.text[:500]}"
 
 SYLLABUS = {
-    "⚛️ Physics": ["Mechanics", "Thermodynamics", "Electrostatics", "Optics", "Modern Physics"],
-    "🧪 Chemistry": ["Physical", "Inorganic", "Organic"],
-    "📐 Maths": ["Algebra", "Calculus", "Coordinate", "Vectors"]
+    "⚛️ Physics": ["Units & Dimensions", "Kinematics", "Laws of Motion", "Work Energy", "Rotational Motion", "Gravitation", "Thermodynamics", "Electrostatics", "Current Electricity", "Magnetism", "Optics", "Modern Physics"],
+    "🧪 Chemistry": ["Basic Concepts", "Atomic Structure", "Periodic Table", "Chemical Bonding", "Thermodynamics", "Equilibrium", "s-p Block", "d-f Block", "Coordination", "Organic Basics", "Hydrocarbons", "Aldehydes Ketones"],
+    "📐 Maths": ["Sets & Functions", "Complex Numbers", "Matrices", "Permutation", "Sequence & Series", "Limits", "Differentiation", "Integration", "Differential Equations", "Coordinate Geometry", "Vectors & 3D", "Probability"]
 }
 
 subject = st.selectbox("Subject", list(SYLLABUS.keys()))
