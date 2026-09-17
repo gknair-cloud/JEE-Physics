@@ -49,7 +49,7 @@ with tab1:
                 st.markdown(call_gemini(prompt, img))
 
 with tab2:
-    num = st.slider("എത്ര ചോദ്യം?", 1, 10, 5)
+    num = st.slider("എത്ര ചോദ്യം?", 1, 20, 10, 5)
     qtype = st.radio("Type", ["MCQ", "Numerical Value"], horizontal=True)
     if st.button("Generate Practice Set"):
         with st.spinner("NTA style questions..."):
