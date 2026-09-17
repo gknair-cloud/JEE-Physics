@@ -108,16 +108,3 @@ with tab4:
                 st.session_state.mock_started = False
                 st.session_state.mock_questions = ""
                 st.rerun()
-
-prompt = f"""Create JEE Main Mock Test - EXACTLY 30 Questions - MUST be from Previous Year Questions.
-
-STRICT RULES:
-1. Pick questions ONLY from JEE Main Last 5 Years PYQ (2020, 2021, 2022, 2023, 2024, 2025 January & April attempts).
-2. Pattern: Q1-10 Physics, Q11-20 Chemistry, Q21-30 Maths.
-3. Level: {level}.
-4. SHUFFLE randomly - don't keep year-wise order. Mix 2020-2025 questions.
-5. For each question, add small tag like [2023] or [2024] at end.
-6. Mix MCQ (4 options) and Numerical.
-7. Give ONLY questions, NO answers now. Keep it short and real JEE style.
-
-Generate 30 PYQ now."""
